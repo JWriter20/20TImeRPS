@@ -208,7 +208,7 @@ class GamePage extends StatelessWidget {
   Widget build (BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Best of " + rounds + " Rounds"),
+        title: Text(rounds + " Rounds"),
       ),
       body: Center(
         child: Column(
@@ -593,7 +593,7 @@ class HomepageButton extends StatelessWidget{
             ),
               padding: const EdgeInsets.all(20.0),
               child: const Text(
-                '                    Best of 5 rounds                    ',
+                '                        5 rounds                        ',
                 style: TextStyle(fontSize: 25)
               ),
             ),
@@ -622,7 +622,7 @@ class HomepageButton2 extends StatelessWidget{
             ),
               padding: const EdgeInsets.all(20.0),
               child: const Text(
-                '                    Best of 9 rounds                    ',
+                '                        9 rounds                        ',
                 style: TextStyle(fontSize: 25)
               ),
             ),
@@ -651,7 +651,7 @@ class HomepageButton3 extends StatelessWidget{
             ),
               padding: const EdgeInsets.all(20.0),
               child: const Text(
-                '                   Best of 15 rounds                   ',
+                '                       15 rounds                       ',
                 style: TextStyle(fontSize: 25)
               ),
             ),
