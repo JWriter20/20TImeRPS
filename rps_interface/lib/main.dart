@@ -7,9 +7,9 @@ void main() => runApp(MyApp());
 
 //AI portion:
 
-double paperChance = 33;
-double rockChance = 33; 
-double scissorsChance = 100 - rockChance - paperChance;
+int paperChance = 33;
+int rockChance = 33; 
+int scissorsChance = 100 - rockChance - paperChance;
 
 double repStyleWin = 0;
 double repStyleLose = 0;
@@ -22,9 +22,6 @@ double changeStyleTie = 0;
 double rocksThrown = 0;
 double papersThrown = 0;
 double scissorsThrown = 0;
-
-double confidence = 5;
-double forgetVal = 3;
 
 String compChoice;
 String userChoice;
@@ -49,13 +46,13 @@ class AiMethods {
   }
   double getSwitchConfidence(){
     //greater than 1 is quite sure, 1 is half sure, less than 1 is not sure
-    var switchResults = (repStyleWin + 0.25*(repStyleTie) - 0.75*(repStyleLose)) / (numRounds/5.0);
+    var switchResults = (changeStyleWin + 0.25*(changeStyleTie) - 0.75*(changeStyleLose)) / (numRounds/5.0);
     return sigmoidFunction(switchResults);
     
   }
 
   double getStayConfidence(){
-    var stayResults = (changeStyleWin + 0.25*(changeStyleTie) - 0.75*(changeStyleLose)) / (numRounds/5.0);
+    var stayResults = (repStyleWin + 0.25*(repStyleTie) - 0.75*(repStyleLose)) / (numRounds/5.0);
     return sigmoidFunction(stayResults);
   }
   String prevChoice = userChoices[userChoices.length-1];
@@ -68,9 +65,9 @@ class AiMethods {
           rockChance += 5;
           scissorsChance -= 20;
         }else{
-          paperChance -= 20;
-          rockChance += 5;
-          scissorsChance += 15;
+          paperChance -= 10;
+          rockChance -= 10;
+          scissorsChance += 20;
         }
 
         break;
@@ -81,9 +78,9 @@ class AiMethods {
           rockChance -= 20;
           scissorsChance += 15;
         }else{
-          paperChance -= 20;
-          rockChance += 5;
-          scissorsChance += 15;
+          paperChance -= 10;
+          rockChance += 20;
+          scissorsChance -= 10;
         }
 
       break;
@@ -94,84 +91,84 @@ class AiMethods {
           rockChance += 15;
           scissorsChance += 5;
         }else{
-          paperChance += 15;
-          rockChance -= 20;
-          scissorsChance += 5;
+          paperChance += 20;
+          rockChance -= 10;
+          scissorsChance -= 10;
         }
 
       break;
 
     }
     if(rockChance > 80){
-      double remainder = rockChance - 80;
+      int remainder = rockChance - 80;
       rockChance = 80;
       if(remainder % 2 ==0){
-        paperChance += remainder/2;
-        scissorsChance += remainder/2;
+        paperChance += (remainder ~/ 2);
+        scissorsChance += (remainder ~/ 2);
       }else{
-        paperChance += remainder/2 + 1;
-        scissorsChance += remainder/2;
+        paperChance += (remainder ~/ 2) + 1;
+        scissorsChance += remainder ~/ 2;
       }
 
     }
 
     if(paperChance > 80){
-      double remainder = paperChance - 80;
+      int remainder = paperChance - 80;
       paperChance = 80;
       if(remainder % 2 ==0){
-        rockChance += remainder/2;
-        scissorsChance += remainder/2;
+        rockChance += (remainder ~/ 2);
+        scissorsChance += (remainder ~/ 2);
       }else{
-        rockChance += remainder/2 + 1;
-        scissorsChance += remainder/2;
+        rockChance += (remainder ~/ 2) + 1;
+        scissorsChance += (remainder ~/ 2);
       }
     }
 
     if(scissorsChance > 80){
-      double remainder = scissorsChance - 80;
+      int remainder = scissorsChance - 80;
       scissorsChance = 80;
       if(remainder % 2 ==0){
-        paperChance += remainder/2;
-        rockChance += remainder/2;
+        paperChance += (remainder ~/ 2);
+        rockChance += (remainder ~/ 2);
       }else{
-        paperChance += remainder/2 + 1;
-        rockChance += remainder/2;
+        paperChance += (remainder ~/ 2) + 1;
+        rockChance += (remainder ~/ 2);
       }
     }
 
     if(rockChance < 20 ){
-      double remainder = 20 - rockChance;
+      int remainder = 20 - rockChance;
       rockChance = 20;
       if(remainder % 2 ==0){
-        paperChance -= remainder/2;
-        scissorsChance -= remainder/2;
+        paperChance -= (remainder ~/ 2);
+        scissorsChance -= (remainder ~/ 2);
       }else{
-        paperChance -= remainder/2 + 1;
-        scissorsChance -= remainder/2;
+        paperChance -= (remainder ~/ 2) + 1;
+        scissorsChance -= (remainder ~/ 2);
       }
     }
 
     if(paperChance < 20){
-      double remainder = 20 - paperChance;
+      int remainder = 20 - paperChance;
       paperChance = 20;
       if(remainder % 2 ==0){
-        rockChance -= remainder/2;
-        scissorsChance -= remainder/2;
+        rockChance -= (remainder ~/ 2);
+        scissorsChance -= (remainder ~/ 2);
       }else{
-        rockChance -= remainder/2 + 1;
-        scissorsChance -= remainder/2;
+        rockChance -= (remainder ~/ 2) + 1;
+        scissorsChance -= (remainder ~/ 2);
       }
     }
 
     if(scissorsChance < 20){
-      double remainder = 20 - scissorsChance;
+      int remainder = 20 - scissorsChance;
       scissorsChance = 20;
       if(remainder % 2 ==0){
-        paperChance -= remainder/2;
-        rockChance -= remainder/2;
+        paperChance -= (remainder ~/ 2);
+        rockChance -= (remainder ~/ 2);
       }else{
-        paperChance -= remainder/2 + 1;
-        rockChance -= remainder/2;
+        paperChance -= (remainder ~/ 2) + 1;
+        rockChance -= (remainder ~/ 2);
       }
     }
     
@@ -231,9 +228,10 @@ class GetRand {
     //9 10 11
     var randChoice = "";
     var randNum = Random().nextInt(100);
-    if(randNum < paperChance){randChoice = "11";}
-    else if(randNum >= (paperChance + scissorsChance)){randChoice = "10";}
-    else{randChoice = "9";}
+    print("randnum: " + randNum.toString());
+    if(randNum < paperChance){randChoice = "11"; print("1");}
+    else if(randNum >= (paperChance + scissorsChance)){randChoice = "10";print("2");}
+    else{randChoice = "9";print("3");}
 
     return randChoice;
   }
@@ -267,6 +265,8 @@ class ResultsMatrix {
     }
     AiMethods().adjustOdds();
     AiMethods().printOdds();
+    print("stayChance: " + AiMethods().getStayConfidence().toString());
+    print("ChangeChance: " + AiMethods().getSwitchConfidence().toString());
     return winMatrix()[myGuessParsed][compGuessParsed];
   }
 }
