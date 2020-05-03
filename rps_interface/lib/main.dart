@@ -1,9 +1,35 @@
 import 'dart:math';
-import 'dart:async';
+//import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
+//import 'package:http/http.dart';
 
 void main() => runApp(MyApp());
+
+//AI portion:
+
+double paperChance = 33;
+double rockChance = 33; 
+double scissorsChance = 100 - rockChance - paperChance;
+
+double repStyleWin = 0;
+double repStyleLose = 0;
+double repStyleTie = 0;
+
+double changeStyleWin = 0;
+double changeStyleLose = 0;
+double changeStyleTie = 0;
+
+double rocksThrown = 0;
+double papersThrown = 0;
+double scissorsThrown = 0;
+
+double confidence = 5;
+double forgetVal = 3;
+
+String compChoice;
+String userChoice;
+
+List<String> userChoices = new List<String>();
 
 int numRounds;
 String rounds;
@@ -15,6 +41,148 @@ int ties = 0;
 String win = 'Wins: ' + wins.toString();
 String lose = 'Losses: ' + losses.toString();
 String tie = 'Ties: ' + ties.toString();
+
+
+class AiMethods {
+  double sigmoidFunction(double confidenceVal){
+      return confidenceVal/(sqrt(1+ pow(confidenceVal, 2)));
+  }
+  double getSwitchConfidence(){
+    //greater than 1 is quite sure, 1 is half sure, less than 1 is not sure
+    var switchResults = (repStyleWin + 0.25*(repStyleTie) - 0.75*(repStyleLose)) / (numRounds/5.0);
+    return sigmoidFunction(switchResults);
+    
+  }
+
+  double getStayConfidence(){
+    var stayResults = (changeStyleWin + 0.25*(changeStyleTie) - 0.75*(changeStyleLose)) / (numRounds/5.0);
+    return sigmoidFunction(stayResults);
+  }
+  String prevChoice = userChoices[userChoices.length-1];
+
+  void adjustOdds(){
+    switch(prevChoice){
+      case "r": 
+        if(getStayConfidence()> getSwitchConfidence()){
+          paperChance += 15;
+          rockChance += 5;
+          scissorsChance -= 20;
+        }else{
+          paperChance -= 20;
+          rockChance += 5;
+          scissorsChance += 15;
+        }
+
+        break;
+
+      case "p":
+        if(getStayConfidence()> getSwitchConfidence()){
+          paperChance += 5;
+          rockChance -= 20;
+          scissorsChance += 15;
+        }else{
+          paperChance -= 20;
+          rockChance += 5;
+          scissorsChance += 15;
+        }
+
+      break;
+
+      case "s":
+        if(getStayConfidence()> getSwitchConfidence()){
+          paperChance -= 20;
+          rockChance += 15;
+          scissorsChance += 5;
+        }else{
+          paperChance += 15;
+          rockChance -= 20;
+          scissorsChance += 5;
+        }
+
+      break;
+
+    }
+    if(rockChance > 80){
+      double remainder = rockChance - 80;
+      rockChance = 80;
+      if(remainder % 2 ==0){
+        paperChance += remainder/2;
+        scissorsChance += remainder/2;
+      }else{
+        paperChance += remainder/2 + 1;
+        scissorsChance += remainder/2;
+      }
+
+    }
+
+    if(paperChance > 80){
+      double remainder = paperChance - 80;
+      paperChance = 80;
+      if(remainder % 2 ==0){
+        rockChance += remainder/2;
+        scissorsChance += remainder/2;
+      }else{
+        rockChance += remainder/2 + 1;
+        scissorsChance += remainder/2;
+      }
+    }
+
+    if(scissorsChance > 80){
+      double remainder = scissorsChance - 80;
+      scissorsChance = 80;
+      if(remainder % 2 ==0){
+        paperChance += remainder/2;
+        rockChance += remainder/2;
+      }else{
+        paperChance += remainder/2 + 1;
+        rockChance += remainder/2;
+      }
+    }
+
+    if(rockChance < 20 ){
+      double remainder = 20 - rockChance;
+      rockChance = 20;
+      if(remainder % 2 ==0){
+        paperChance -= remainder/2;
+        scissorsChance -= remainder/2;
+      }else{
+        paperChance -= remainder/2 + 1;
+        scissorsChance -= remainder/2;
+      }
+    }
+
+    if(paperChance < 20){
+      double remainder = 20 - paperChance;
+      paperChance = 20;
+      if(remainder % 2 ==0){
+        rockChance -= remainder/2;
+        scissorsChance -= remainder/2;
+      }else{
+        rockChance -= remainder/2 + 1;
+        scissorsChance -= remainder/2;
+      }
+    }
+
+    if(scissorsChance < 20){
+      double remainder = 20 - scissorsChance;
+      scissorsChance = 20;
+      if(remainder % 2 ==0){
+        paperChance -= remainder/2;
+        rockChance -= remainder/2;
+      }else{
+        paperChance -= remainder/2 + 1;
+        rockChance -= remainder/2;
+      }
+    }
+    
+
+  }
+  void printOdds(){
+    print("rockchance: " + rockChance.toString());
+     print("PaperChance: " + paperChance.toString());
+     print("ScissorsChance: " + scissorsChance.toString());
+  }
+}
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -60,7 +228,13 @@ class GamePage extends StatelessWidget {
 }
 class GetRand {
   String randChoice(){
-  var randChoice = (Random().nextInt(3)+9).toString();
+    //9 10 11
+    var randChoice = "";
+    var randNum = Random().nextInt(100);
+    if(randNum < paperChance){randChoice = "11";}
+    else if(randNum >= (paperChance + scissorsChance)){randChoice = "10";}
+    else{randChoice = "9";}
+
     return randChoice;
   }
 }
@@ -79,14 +253,20 @@ class ResultsMatrix {
     return x;
   }
   String didWin(String randChoice){
+    String prevChoice;
+    if(userChoices.length > 0){prevChoice = userChoices[userChoices.length-1];}
+    else{prevChoice = "r";}
+    
     var myGuessParsed = int.parse(pushedButton)-9;
     var compGuessParsed = int.parse(randChoice)-9;
     switch(winMatrix()[myGuessParsed][compGuessParsed]){
-      case 'You Tie': ties++; break;
-      case 'You Win': wins++; break;
-      case 'You Lose': losses++; break;
+      case 'You Tie': ties++; if(prevChoice == userChoice) repStyleTie++;else{changeStyleTie++;}break;
+      case 'You Win': wins++; if(prevChoice == userChoice) repStyleWin++;else{changeStyleWin++;} break;
+      case 'You Lose': losses++; if(prevChoice == userChoice) repStyleLose++;else{changeStyleLose++;}break;
       default: return 'this broken'; break;
     }
+    AiMethods().adjustOdds();
+    AiMethods().printOdds();
     return winMatrix()[myGuessParsed][compGuessParsed];
   }
 }
@@ -167,6 +347,9 @@ class PictureButton1 extends StatelessWidget{
       highlightColor: Colors.white,
         onPressed: () {
           pushedButton = '9';
+          userChoice = 's';
+          userChoices.insert(userChoice.length-1, userChoice);
+          scissorsThrown++;
           Navigator.push(context,
             new MaterialPageRoute(builder: (context) => ResultPage()),
           );
@@ -183,6 +366,9 @@ class PictureButton2 extends StatelessWidget{
       highlightColor: Colors.white,
         onPressed: () {
           pushedButton = '10';
+          userChoice = 'r';
+          userChoices.insert(userChoice.length-1, userChoice);
+          rocksThrown++;
           Navigator.push(context,
             new MaterialPageRoute(builder: (context) => ResultPage()),
           );
@@ -199,6 +385,9 @@ class PictureButton3 extends StatelessWidget{
       highlightColor: Colors.white,
         onPressed: () {
           pushedButton = '11';
+          userChoice = 'p';
+          userChoices.insert(userChoice.length-1, userChoice);
+          papersThrown++;
           Navigator.push(context,
             new MaterialPageRoute(builder: (context) => ResultPage()),
           );
@@ -336,6 +525,9 @@ class BackToHomeButton extends StatelessWidget{
       child: RaisedButton(
         onPressed: () { 
             wins = 0;
+            rockChance = 33;
+            paperChance = 33;
+            scissorsChance = (100 - rockChance - paperChance);
             losses = 0;
             ties = 0;
           Navigator.pop(context);
@@ -482,9 +674,13 @@ class ImageFinder extends StatelessWidget{
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  Future<String> getdata() async {
-     // var response = 
-  }
+  //Future<String> voidgetdata() async {
+     //print("rockchance: " + rockChance.toString());
+     //print("PaperChance: " + paperChance.toString());
+     //print("ScissorsChance: " + scissorsChance.toString());
+
+     //return null;
+  //}
 
 
   @override
@@ -526,6 +722,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
     );
+    
   }
 }
 
