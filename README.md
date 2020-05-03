@@ -8,17 +8,20 @@ Rock paper scissors AI
     Step 2: Download XCode, Choose version here: https://developer.apple.com/xcode/resources/
     (I believe I used the newest non-beta version)
 
-    Step 3: Download the IOS simulator by going into Xcode, then clicking "Xcode" up in the upper left corner by the apple symbol then Preferences > Components and the download should be right there, I used the ios 13.2 simulator
+    Step 3: Download the IOS simulator by going into Xcode, then clicking "Xcode" up in the upper left corner by the apple symbol then Preferences > Components and the download should be right there, I used the ios 13.2 simulator (see picture below for example)
 
     Step 4: Download Flutter here: https://flutter.dev/docs/get-started/install
 
-    Step 5: Open up the simulator by going to your computer's search bar and typing "simulator" 
+    Step 5: Open up the simulator by going to your computer's search bar and typing "simulator" (see 2nd image below)
     let it load
 
     Step 6: clone the code from the github into your Visual Studio code, and go to the terminal inside of VSC (if you dont have one, then click the "terminal button" on the top bar that contains things like "File" and "Edit" then click new Terminal) then make sure you are in the rps_interface folder (if not cd into it in the terminal) then type "flutter run" and wait. 
 
     Step 7: After the app has loaded you should be good to go, it normally takes around 30 seconds or less (to load) depending on how many tabs you have open
 
+![Image could not load](Instructions.png)
+
+![Image could not load](Simulator.png)
 
 ## Screenshots of Successful Run
 

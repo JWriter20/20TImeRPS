@@ -1,3 +1,16 @@
+/*
+Name: Jake Writer
+Date: 5/3/2020
+Purpose: This file builds an application with four different pages, the Homepage in 
+which the user chooses how many games they want to play, the choicePage, in which 
+they choose either rock, paper, or scissors, the individualGameResultPage, which shows 
+who won that round, and the finalResultsPage, which shows the final number of wins,
+losses, and ties. This file also contains the AI which the computer uses to make its 
+guesses, it adjusts the odds based on whether or not it believes the player is going 
+to switch or stay with their previous move. 
+Initials: JAW
+*/
+
 import 'dart:math';
 //import 'dart:async';
 import 'package:flutter/material.dart';
@@ -41,22 +54,31 @@ String tie = 'Ties: ' + ties.toString();
 
 
 class AiMethods {
+
+  //Purpose: converts the number input into a number below 1 and above -1, this prevents the 
+  //numbers from getting too skewed in one direction
+  //Assumptions: a double in inputted as the parameter 
   double sigmoidFunction(double confidenceVal){
       return confidenceVal/(sqrt(1+ pow(confidenceVal, 2)));
   }
+  //Purpose: To return the predicted confidence level that the player will switch moves
+  //assumptions: none
   double getSwitchConfidence(){
     //greater than 1 is quite sure, 1 is half sure, less than 1 is not sure
     var switchResults = (changeStyleWin + 0.25*(changeStyleTie) - 0.75*(changeStyleLose)) / (numRounds/5.0);
     return sigmoidFunction(switchResults);
     
   }
-
+  //Purpose: To return the predicted confidence level that the player will not switch moves
+  //assumptions: none
   double getStayConfidence(){
     var stayResults = (repStyleWin + 0.25*(repStyleTie) - 0.75*(repStyleLose)) / (numRounds/5.0);
     return sigmoidFunction(stayResults);
   }
   String prevChoice = userChoices[userChoices.length-1];
-
+  //Purpose: Adjusts the odds of the three computer choices by looking at the stayConfidence,
+  //switchConfidence and which move was previously thrown
+  //assumptions: none
   void adjustOdds(){
     switch(prevChoice){
       case "r": 
@@ -98,6 +120,8 @@ class AiMethods {
 
       break;
 
+      //makes sure there is always an aspect of randomness by never letting the odds 
+      //go below 20 or above 80
     }
     if(rockChance > 80){
       int remainder = rockChance - 80;
@@ -174,12 +198,16 @@ class AiMethods {
     
 
   }
+  //Purpose: to print the odds of each of the choices
+  //Assumptions: None
   void printOdds(){
     print("rockchance: " + rockChance.toString());
      print("PaperChance: " + paperChance.toString());
      print("ScissorsChance: " + scissorsChance.toString());
   }
 }
+//Purpose: builds the app itself and records data based on the user's choices
+//Assumptions: flutter is installed
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -202,7 +230,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
+//Purpose: creates the GamePage
 class GamePage extends StatelessWidget {
   @override
   Widget build (BuildContext context) {
@@ -223,6 +251,7 @@ class GamePage extends StatelessWidget {
     );
   }
 }
+//Purpose: choose a Random action for the computer to take using the calculated odds
 class GetRand {
   String randChoice(){
     //9 10 11
@@ -236,6 +265,7 @@ class GetRand {
     return randChoice;
   }
 }
+//Purpose: Used to see if the user won or lost
 class ResultsMatrix {
   List winMatrix(){
   var x = new List.generate(3, (_) => new List(3));
@@ -250,6 +280,7 @@ class ResultsMatrix {
     x[2][2] = 'You Tie';
     return x;
   }
+  //Purpose: returns if the user won or lost and stores data
   String didWin(String randChoice){
     String prevChoice;
     if(userChoices.length > 0){prevChoice = userChoices[userChoices.length-1];}
@@ -270,6 +301,7 @@ class ResultsMatrix {
     return winMatrix()[myGuessParsed][compGuessParsed];
   }
 }
+//Purpose: Creates the finalaPage
 class FinalPage extends StatelessWidget {
   Widget build (BuildContext context) {
     return Scaffold(
@@ -295,7 +327,7 @@ class FinalPage extends StatelessWidget {
   }
 }
 
-
+//Purpose: Creates the resultPage
 class ResultPage extends StatelessWidget {
   final String randChoice = GetRand().randChoice();
   
@@ -340,7 +372,7 @@ class ResultPage extends StatelessWidget {
   }
 }
 
-
+//Purpose: A button used in the GamePage
 class PictureButton1 extends StatelessWidget{
    Widget build(BuildContext context){
     return FlatButton(
@@ -360,6 +392,7 @@ class PictureButton1 extends StatelessWidget{
   }
 }
 
+//Purpose: A button used in the GamePage
 class PictureButton2 extends StatelessWidget{
   Widget build(BuildContext context){
     return FlatButton(
@@ -379,6 +412,7 @@ class PictureButton2 extends StatelessWidget{
   }
 }
 
+//Purpose: A button used in the GamePage
 class PictureButton3 extends StatelessWidget{
   Widget build(BuildContext context){
     return FlatButton(
@@ -397,6 +431,7 @@ class PictureButton3 extends StatelessWidget{
     );
   }
 }
+//Purpose: Formats the result in the FinalResults page
 class DecorativeBackground extends StatelessWidget{
   String getText(var text){
     return text;
@@ -426,6 +461,7 @@ class DecorativeBackground extends StatelessWidget{
     );
   }
 }
+//Purpose: Formats the result in the FinalResults page
 class DecorativeBackground2 extends StatelessWidget{
   String getText(var text){
     return text;
@@ -454,6 +490,7 @@ class DecorativeBackground2 extends StatelessWidget{
     );
   }
 }
+//Purpose: Formats the result in the FinalResults page
 class DecorativeBackground3 extends StatelessWidget{
   String getText(var text){
     return text;
@@ -482,7 +519,9 @@ class DecorativeBackground3 extends StatelessWidget{
     );
   }
 }
-
+//Purpose: Button that takes the user back a page to play again 
+// as long as the number of rounds has not exceeded the initially 
+// selected number
 class PlayAgainButton extends StatelessWidget{
   Widget build(BuildContext context){
     return Container(
@@ -518,7 +557,8 @@ class PlayAgainButton extends StatelessWidget{
     );
   }
 }
-
+//Purpose: Takes the user back to the homepage
+//Assumptions: The user is on the last page (finalResultsPage)
 class BackToHomeButton extends StatelessWidget{
   Widget build(BuildContext context){
     return Container(
@@ -553,7 +593,7 @@ class BackToHomeButton extends StatelessWidget{
   }
 }
 
-
+//Purpose: Formats the Homepage
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
@@ -572,6 +612,7 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+//Purpose: Creates a button on the homepage that takes user to the GamePage
 class HomepageButton extends StatelessWidget{
   Widget build(BuildContext context){
     return Container(
@@ -601,6 +642,7 @@ class HomepageButton extends StatelessWidget{
     );
   }
 }
+//Purpose: Creates a button on the homepage that takes user to the GamePage
 class HomepageButton2 extends StatelessWidget{
   Widget build(BuildContext context){
     return Container(
@@ -630,6 +672,7 @@ class HomepageButton2 extends StatelessWidget{
     );
   } 
 }
+//Purpose: Creates a button on the homepage that takes user to the GamePage
 class HomepageButton3 extends StatelessWidget{
   Widget build(BuildContext context){
     return Container(
@@ -660,6 +703,7 @@ class HomepageButton3 extends StatelessWidget{
   } 
 }
 
+//Purpose: Gets a picture from a number assigned to it
 class ImageFinder extends StatelessWidget{
   Image findImage(String numOfPic){
     var assetImage = new AssetImage('./lib/Assets/Images/th-' + numOfPic + '.jpg');
@@ -682,7 +726,7 @@ class _MyHomePageState extends State<MyHomePage> {
      //return null;
   //}
 
-
+  //Builds homepage
   @override
   Widget build(BuildContext context) {
     return Scaffold(
