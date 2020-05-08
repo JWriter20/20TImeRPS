@@ -19,19 +19,20 @@ Step 6: clone the code from the github into your Visual Studio code, and go to t
 
 Step 7: After the app has loaded you should be good to go, it normally takes around 30 seconds or less (to load) depending on how many tabs you have open
 
-![Image could not load](Instructions.png)
+<img src="Instructions.png" width="40%" alt="img could not load">
 
-![Image could not load](Simulator.png)
+<img src="Simulator.png" width="40%" alt="img could not load">
 
 ## Screenshots of Successful Run
 
-<img scr="HomePage.png" width="40%" alt="img could not load">
+<img src="HomePage.png" width="40%" alt="img could not load">
 
-![Image could not load](GuessPage.png)
+<img src="GuessPage.png" width="40%" alt="img could not load">
 
-![Image could not load](GameResult.png)
+<img src="GameResult.png" width="40%" alt="img could not load">
 
-![Image could not load](FinalResults.png)
+<img src="FinalResults.png" width="40%" alt="img could not load">
+
 
 ## File Purposes
 
