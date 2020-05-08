@@ -63,3 +63,8 @@ I coded this while learning how to use flutter and dart, thus the code is pretty
 #### Markov chain/ added more advanced AI
 In its current state the AI that calculates the computer move, while decent, still can be greatly improved upon. If I have additional time, the addition of a Markov chain to store user patterns in moves could be quite useful. For that matter, the data is reset each time a new round starts, so being able to store and access data from past rounds would also be quite useful. 
 
+#### Better controlled testing 
+The testing I have done so far is quite limited, I have only done around 150 tests with my own generated data. 
+If possible, a nice future developement would be to create code that would test my AI using mass amounts of data
+to find its true accuracy.
+
