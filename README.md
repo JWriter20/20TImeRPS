@@ -29,7 +29,7 @@ Step 7: After the app has loaded you should be good to go, it normally takes aro
 
 ![Image could not load](GuessPage.png)
 
-![Image could not load](GamePage.png)
+![Image could not load](GameResult.png)
 
 ![Image could not load](FinalResults.png)
 
