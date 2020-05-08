@@ -25,7 +25,7 @@ Step 7: After the app has loaded you should be good to go, it normally takes aro
 
 ## Screenshots of Successful Run
 
-![Image could not load](HomePage.png)
+![Image could not load](<img scr="HomePage.png" width="40%">)
 
 ![Image could not load](GuessPage.png)
 
@@ -36,29 +36,29 @@ Step 7: After the app has loaded you should be good to go, it normally takes aro
 ## File Purposes
 
 #### The .png files directly in 20TimeRPS
-    Used in this README as screenshots of successful runs
+Used in this README as screenshots of successful runs
 
 #### rps_Interface 
-    Contains all code within inner folders and files
+Contains all code within inner folders and files
     
 #### Flutter sdk folders 
-    ie. android, build, ios, pubspec.lock, pubspec.yaml, README.md, test
-    All of these folders and files are used in (and make up) the flutter api, therefore I have basically no idea what they do other than what can be implied from their name and description. 
+ie. android, build, ios, pubspec.lock, pubspec.yaml, README.md, test
+All of these folders and files are used in (and make up) the flutter api, therefore I have basically no idea what they do other than what can be implied from their name and description. 
     
 #### lib
-    Contains all of the image assets and the main dart file used in my project, this contains basically everything I created
+Contains all of the image assets and the main dart file used in my project, this contains basically everything I created
     
 #### Main.dart
-    This is the file where all of the dart code is written which creates the application and calculates the odds of the approriate moves to make in the rps game
+This is the file where all of the dart code is written which creates the application and calculates the odds of the approriate moves to make in the rps game
     
 #### Assests and Images folders
-    These contain all of the images I either used or was thinking about using throughout my project. There are quite a few unused photos, this is because I initially found jpgs and later realized that pngs worked better for the interface look.
+These contain all of the images I either used or was thinking about using throughout my project. There are quite a few unused photos, this is because I initially found jpgs and later realized that pngs worked better for the interface look.
 
 
 ## ToDo/Unimplemented Features
 #### Clean up Code
-    I coded this while learning how to use flutter and dart, thus the code is pretty messy and excessive. If given enough time, I believe I could cut the number of lines down by nearly half and make it much more readable.
+I coded this while learning how to use flutter and dart, thus the code is pretty messy and excessive. If given enough time, I believe I could cut the number of lines down by nearly half and make it much more readable.
 
 #### Markov chain/ added more advanced AI
-    In its current state the AI that calculates the computer move, while decent, still can be greatly improved upon. If I have additional time, the addition of a Markov chain to store user patterns in moves could be quite useful. For that matter, the data is reset each time a new round starts, so being able to store and access data from past rounds would also be quite useful. 
+In its current state the AI that calculates the computer move, while decent, still can be greatly improved upon. If I have additional time, the addition of a Markov chain to store user patterns in moves could be quite useful. For that matter, the data is reset each time a new round starts, so being able to store and access data from past rounds would also be quite useful. 
 
