@@ -25,7 +25,7 @@ Step 7: After the app has loaded you should be good to go, it normally takes aro
 
 ## Screenshots of Successful Run
 
-![Image could not load](<img scr="HomePage.png" width="40%">)
+<img scr="HomePage.png" width="40%" alt="img could not load">
 
 ![Image could not load](GuessPage.png)
 
