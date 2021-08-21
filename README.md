@@ -1,5 +1,5 @@
 # 20TImeRPS
-Rock paper scissors AI
+Rock paper scissors AI App
 
 ## Instructions:
 
