@@ -3,7 +3,7 @@ Rock paper scissors AI App
 
 ## Instructions:
 
-Step 1: Download Visual Studio code (You could probably use another IDE, but I know for sure that this one works) Here: https://code.visualstudio.com/download
+Step 1: Download Visual Studio code Here: https://code.visualstudio.com/download
 
 Step 2: Download XCode, Choose version here: https://developer.apple.com/xcode/resources/
     (I believe I used the newest non-beta version)
